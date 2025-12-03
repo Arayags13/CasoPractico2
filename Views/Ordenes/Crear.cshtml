@@ -1,0 +1,97 @@
+﻿@model CasoPractico2.BLL.Dtos.OrdenDto
+
+@{
+    ViewData["Title"] = "Nueva Orden";
+}
+
+<h2>Crear Nueva Orden</h2>
+
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger">@ViewBag.Error</div>
+}
+
+<form asp-action="Crear" method="post">
+    <div class="row">
+        <div class="col-md-5">
+            <label class="control-label">Producto</label>
+            <select id="selectProducto" class="form-control" asp-items="ViewBag.Productos">
+                <option value="">-- Seleccione un producto --</option>
+            </select>
+        </div>
+
+        <div class="col-md-3">
+            <label class="control-label">Cantidad</label>
+            <input type="number" id="inputCantidad" class="form-control" min="1" value="1" />
+        </div>
+
+        <div class="col-md-2 d-flex align-items-end">
+            <button type="button" class="btn btn-success" onclick="agregarProducto()">Agregar</button>
+        </div>
+    </div>
+
+    <hr />
+
+    <h4>Detalle de la Orden</h4>
+    <table class="table" id="tablaDetalles">
+        <thead>
+            <tr>
+                <th>Producto (ID)</th>
+                <th>Cantidad</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <div class="form-group mt-3">
+        <input type="submit" value="Generar Orden" class="btn btn-primary" />
+        <a asp-action="Index" class="btn btn-secondary">Volver</a>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        let contador = 0;
+
+        function agregarProducto() {
+            var productoId = document.getElementById("selectProducto").value;
+            var productoTexto = document.getElementById("selectProducto").options[document.getElementById("selectProducto").selectedIndex].text;
+            var cantidad = document.getElementById("inputCantidad").value;
+
+            if (productoId === "" || cantidad < 1) {
+                alert("Seleccione un producto y una cantidad válida.");
+                return;
+            }
+
+            var tbody = document.querySelector("#tablaDetalles tbody");
+            var row = tbody.insertRow();
+
+            // Columna Producto (Visual + Input Oculto para el Modelo)
+            var cellProducto = row.insertCell(0);
+            cellProducto.innerHTML = productoTexto +
+                `<input type="hidden" name="Detalles[${contador}].ProductoId" value="${productoId}" />`;
+
+            // Columna Cantidad (Visual + Input Oculto para el Modelo)
+            var cellCantidad = row.insertCell(1);
+            cellCantidad.innerHTML = cantidad +
+                `<input type="hidden" name="Detalles[${contador}].Cantidad" value="${cantidad}" />`;
+
+            // Columna Eliminar
+            var cellAccion = row.insertCell(2);
+            cellAccion.innerHTML = '<button type="button" class="btn btn-danger btn-sm" onclick="eliminarFila(this)">Quitar</button>';
+
+            contador++;
+
+            // Limpiar inputs
+            document.getElementById("inputCantidad").value = 1;
+            document.getElementById("selectProducto").value = "";
+        }
+
+        function eliminarFila(btn) {
+            var row = btn.parentNode.parentNode;
+            row.parentNode.removeChild(row);
+        }
+    </script>
+}

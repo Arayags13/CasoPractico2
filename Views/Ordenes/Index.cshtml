@@ -1,0 +1,57 @@
+﻿@model IEnumerable<CasoPractico2.BLL.Dtos.OrdenDto>
+
+@{
+    ViewData["Title"] = "Listado de Órdenes";
+}
+
+<h2>Órdenes Registradas</h2>
+
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-success">@TempData["Mensaje"]</div>
+}
+@if (TempData["Error"] != null || ViewBag.Error != null)
+{
+    <div class="alert alert-danger">@(TempData["Error"] ?? ViewBag.Error)</div>
+}
+
+<p>
+    <a asp-action="Crear" class="btn btn-primary">Nueva Orden</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th># Orden</th>
+            <th>Fecha</th>
+            <th>Total</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Fecha.ToString("g")</td>
+                <td>@item.Total.ToString("C")</td>
+                <td>
+                    <span class="badge @(item.Estado == "Cancelada" ? "bg-danger" : "bg-success")">
+                        @item.Estado
+                    </span>
+                </td>
+                <td>
+                    <a asp-action="Detalles" asp-route-id="@item.Id" class="btn btn-info btn-sm">Detalles</a>
+
+                    @if (item.Estado != "Cancelada")
+                    {
+                        <form asp-action="Cancelar" asp-route-id="@item.Id" method="post" style="display:inline;" onsubmit="return confirm('¿Está seguro de cancelar esta orden?');">
+                            <button type="submit" class="btn btn-danger btn-sm">Cancelar</button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

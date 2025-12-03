@@ -1,0 +1,43 @@
+﻿@model CasoPractico2.BLL.Dtos.OrdenDto
+
+@{
+    ViewData["Title"] = "Detalle de Orden";
+}
+
+<h4 class="mb-3">Productos en la Orden</h4>
+<div class="table-responsive">
+    <table class="table table-striped table-bordered align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>Producto</th>
+                <th class="text-center">Cantidad</th>
+                <th class="text-end">Precio Unit.</th>
+                <th class="text-end">Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Detalles != null && Model.Detalles.Any())
+            {
+                foreach (var item in Model.Detalles)
+                {
+                    <tr>
+                        <td>
+                            <strong>@item.NombreProducto</strong>
+                            <br />
+                            <small class="text-muted">ID: @item.ProductoId</small>
+                        </td>
+                        <td class="text-center">@item.Cantidad</td>
+                        <td class="text-end">@(item.PrecioUnitario.HasValue? item.PrecioUnitario.Value.ToString("C") : "--")</td>
+                        <td class="text-end fw-bold">@(item.TotalLinea.HasValue? item.TotalLinea.Value.ToString("C") : "--")</td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="4" class="text-center text-muted py-3">No hay detalles disponibles.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
