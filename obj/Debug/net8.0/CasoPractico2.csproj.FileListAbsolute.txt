@@ -139,3 +139,4 @@ C:\dev\CasoPractico2\CasoPractico2\obj\Debug\net8.0\refint\CasoPractico2.dll
 C:\dev\CasoPractico2\CasoPractico2\obj\Debug\net8.0\CasoPractico2.pdb
 C:\dev\CasoPractico2\CasoPractico2\obj\Debug\net8.0\CasoPractico2.genruntimeconfig.cache
 C:\dev\CasoPractico2\CasoPractico2\obj\Debug\net8.0\ref\CasoPractico2.dll
+C:\dev\CasoPractico2\CasoPractico2\obj\Debug\net8.0\CasoPractico2.sourcelink.json

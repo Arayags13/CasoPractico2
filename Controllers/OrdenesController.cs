@@ -1,14 +1,14 @@
-﻿using CasoPractico2.BLL.Dtos;
-using CasoPractico2.BLL.Servicios;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using CasoPractico2.BLL.Dtos;
+using CasoPractico2.BLL.Servicios;
 
-namespace MvcInventarios.Controllers
+namespace CasoPractico2.Controllers
 {
     public class OrdenesController : Controller
     {
         private readonly IOrdenServicio _ordenServicio;
-        private readonly IProductoServicio _productoServicio; // Necesario para el dropdown de productos
+        private readonly IProductoServicio _productoServicio;
 
         public OrdenesController(IOrdenServicio ordenServicio, IProductoServicio productoServicio)
         {
@@ -16,7 +16,6 @@ namespace MvcInventarios.Controllers
             _productoServicio = productoServicio;
         }
 
-        // GET: Ordenes/Index
         public async Task<IActionResult> Index()
         {
             var respuesta = await _ordenServicio.ObtenerOrdenesAsync();
@@ -30,7 +29,6 @@ namespace MvcInventarios.Controllers
             return View(respuesta.Data);
         }
 
-        // GET: Ordenes/Detalles/5
         public async Task<IActionResult> Detalles(int id)
         {
             var respuesta = await _ordenServicio.ObtenerOrdenPorIdAsync(id);
@@ -44,19 +42,16 @@ namespace MvcInventarios.Controllers
             return View(respuesta.Data);
         }
 
-        // GET: Ordenes/Crear
         public async Task<IActionResult> Crear()
         {
             await CargarListaProductos();
             return View();
         }
 
-        // POST: Ordenes/Crear
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Crear(OrdenDto orden)
         {
-
             if (orden.Detalles == null || !orden.Detalles.Any())
             {
                 ModelState.AddModelError("", "Debe agregar al menos un producto a la orden.");
@@ -81,7 +76,6 @@ namespace MvcInventarios.Controllers
             return View(orden);
         }
 
-        // POST: Ordenes/Cancelar/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Cancelar(int id)
@@ -106,7 +100,6 @@ namespace MvcInventarios.Controllers
             if (!respuesta.EsError)
             {
                 ViewBag.Productos = new SelectList(respuesta.Data, "Id", "Nombre");
-                ViewBag.ProductosData = respuesta.Data;
             }
             else
             {
