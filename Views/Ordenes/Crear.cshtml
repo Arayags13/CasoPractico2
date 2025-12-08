@@ -65,39 +65,32 @@
         var tbody = document.querySelector("#tablaDetalles tbody");
         var row = tbody.insertRow();
 
-        // Columna Producto
         var cellProducto = row.insertCell(0);
-        // Nota: Dejamos el name temporalmente vacío, lo llenaremos con actualizarIndices()
         cellProducto.innerHTML = productoTexto +
             `<input type="hidden" class="input-producto" value="${productoId}" />`;
 
-        // Columna Cantidad
         var cellCantidad = row.insertCell(1);
         cellCantidad.innerHTML = cantidad +
             `<input type="hidden" class="input-cantidad" value="${cantidad}" />`;
 
-        // Columna Accion
         var cellAccion = row.insertCell(2);
         cellAccion.innerHTML = '<button type="button" class="btn btn-danger btn-sm" onclick="eliminarFila(this)">Quitar</button>';
 
-        // Limpiar inputs
         document.getElementById("inputCantidad").value = 1;
         document.getElementById("selectProducto").value = "";
 
-        // IMPORTANTE: Recalcular índices para que sean 0, 1, 2...
         actualizarIndices();
     }
 
     function eliminarFila(btn) {
         var row = btn.parentNode.parentNode;
         row.parentNode.removeChild(row);
-        actualizarIndices(); // Recalcular al borrar
+        actualizarIndices(); 
     }
 
     function actualizarIndices() {
         var rows = document.querySelectorAll("#tablaDetalles tbody tr");
         rows.forEach((row, index) => {
-            // Buscar los inputs ocultos por su clase y actualizar el atributo 'name'
             var inputProducto = row.querySelector(".input-producto");
             var inputCantidad = row.querySelector(".input-cantidad");
 
